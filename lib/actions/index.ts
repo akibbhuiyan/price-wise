@@ -43,5 +43,33 @@ export async function scrapAndStoreProduct(productUrl: string) {
 export async function getProductById(productId: string) {
   try {
     connectToDB();
-  } catch (error) {}
+    const product = await Product.findOne({ _id: productId });
+    if (!product) return null;
+    return product;
+  } catch (error: any) {
+    console.log(`find productbyid:${error.message}`);
+  }
+}
+export async function getAllProduct() {
+  try {
+    connectToDB();
+    const product = await Product.find();
+    if (!product) return null;
+    return product;
+  } catch (error: any) {
+    console.log(`find product:${error.message}`);
+  }
+}
+export async function getSimilarProduct(productId: string) {
+  try {
+    connectToDB();
+    const currentProduct = await Product.findById(productId);
+    if (!currentProduct) return null;
+    const similarProduct = await Product.find({
+      _id: { $ne: productId },
+    }).limit(3);
+    return similarProduct;
+  } catch (error: any) {
+    console.log(`find product:${error.message}`);
+  }
 }
