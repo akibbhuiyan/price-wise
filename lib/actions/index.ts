@@ -4,18 +4,19 @@ import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
 import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
-import { log } from "console";
 import { generateEmailBody, sendEmail } from "../nodemailer";
 import { User } from "@/types";
 
 export async function scrapAndStoreProduct(productUrl: string) {
   if (!productUrl) return;
+
   try {
     connectToDB();
     const scrapeProduct = await scrapeAmazonProduct(productUrl);
+
     if (!scrapeProduct) return;
 
-    let product = scrapeProduct;
+    let product = await scrapeProduct;
     const existingProduct = await Product.findOne({ url: scrapeProduct.url });
     if (existingProduct) {
       const updatedPriceHistory: any = [
@@ -37,9 +38,12 @@ export async function scrapAndStoreProduct(productUrl: string) {
       product,
       { upsert: true, new: true }
     );
+
     revalidatePath(`/products/${newProduct._id}`);
   } catch (error: any) {
-    throw new Error(`Failed to create/update Product:${error}`);
+    console.log(error);
+
+    throw new Error(`Failed to creates/update Product:${error.message}`);
   }
 }
 

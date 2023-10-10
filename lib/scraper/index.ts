@@ -3,6 +3,7 @@ import * as cheerio from "cheerio";
 import { extractPrice, extractCurrency, extractDescription } from "../utils";
 export async function scrapeAmazonProduct(url: string) {
   if (!url) return;
+
   // Brigthdata prxxy
   const username = String(process.env.BRIGHT_DATA_USERNAME);
   const password = String(process.env.BRIGHT_DATA_PASSWORD);
@@ -22,6 +23,7 @@ export async function scrapeAmazonProduct(url: string) {
   try {
     // fetch product page
     const res = await axios.get(url, options);
+
     const $ = cheerio.load(res.data);
     //Extract details
     const title = $("#productTitle").text().trim();
@@ -71,6 +73,7 @@ export async function scrapeAmazonProduct(url: string) {
     };
     return data;
   } catch (error: any) {
-    throw new Error(`Failed to create/update Product:${error.message}`);
+    // throw new Error(`Failed to amazon create/update Product:${error.message}`);
+    console.log(error);
   }
 }
