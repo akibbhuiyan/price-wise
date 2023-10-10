@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema(
       },
     ],
     description: { type: String },
-    outofStock: { type: Boolean, default: false },
+    isOutOfStock: { type: Boolean, default: false },
     discountRate: { type: Number },
     category: { type: String },
     reviewsCount: { type: Number },
