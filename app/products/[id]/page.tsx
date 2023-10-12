@@ -74,7 +74,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           <div className="product-info">
             <div className="flex flex-col gap-2">
               {Number(formatNumber(product.originalPrice)) !== 0 ? (
-                <p className="text-[21px] text-black opacity-50 line-through">
+                <p className="text-[35px] text-black opacity-50">
                   {product.currency}
                   {formatNumber(product.originalPrice)}
                 </p>
