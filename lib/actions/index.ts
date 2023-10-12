@@ -16,7 +16,7 @@ export async function scrapAndStoreProduct(productUrl: string) {
 
     if (!scrapeProduct) return;
 
-    let product = await scrapeProduct;
+    let product = scrapeProduct;
     const existingProduct = await Product.findOne({ url: scrapeProduct.url });
     if (existingProduct) {
       const updatedPriceHistory: any = [
@@ -40,6 +40,8 @@ export async function scrapAndStoreProduct(productUrl: string) {
     );
 
     revalidatePath(`/products/${newProduct._id}`);
+
+    return { message: "success", path: newProduct._id };
   } catch (error: any) {
     console.log(error);
 
