@@ -53,6 +53,8 @@ export async function scrapeAmazonProduct(url: string) {
     const currency = extractCurrency($(".a-price-symbol"));
     const discountRate = $(".savingsPercentage").text().replace(/[-%]/g, "");
     const description = extractDescription($);
+    const category = $("a.a-link-normal.a-color-tertiary");
+
     const data = {
       url,
       title,
@@ -73,7 +75,7 @@ export async function scrapeAmazonProduct(url: string) {
     };
     return data;
   } catch (error: any) {
-    // throw new Error(`Failed to amazon create/update Product:${error.message}`);
     console.log(error);
+    throw new Error(`Failed to amazon create/update Product:${error.message}`);
   }
 }
